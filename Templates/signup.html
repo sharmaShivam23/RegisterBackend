@@ -14,6 +14,7 @@
       background-color: #1e1e2f;
       color: white;
       font-family: 'Segoe UI', sans-serif;
+      font-size: small;
     }
 
     .container {
@@ -25,15 +26,15 @@
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      max-width: 400px;
+      width:auto;
       text-align: center;
-      width: 90%;
+      height: auto;
     }
 
     .btn {
       display: flex;
       align-items: center;
-      background-color: #6a5acd;
+      background-color: black;
       color: white;
       padding: 12px 24px;
       border-radius: 8px;
@@ -45,7 +46,7 @@
     }
 
     .btn:hover {
-      background-color: #7a67e0;
+      background-color: black;
     }
 
     .sym {
@@ -65,12 +66,16 @@
     }
 
     a {
-      color: #7a67e0;
+      color: white;
       text-decoration: none;
     }
 
     a:hover {
       text-decoration: underline;
+    }
+    .img{
+      object-fit: cover;
+      height: 30px;
     }
 
     @media (max-width: 480px) {
@@ -90,12 +95,14 @@
 <body>
   <div class="container sm:text-lg text-xs ">
     <div class="btn">
-      <div class="sym">🏠</div>
-      <div class="text">Study Notion</div>
+      <div class="sym">
+        <img src="CCC.png" class="img" alt="">
+      </div>
+      <div class="text">Cloud coputing cell</div>
     </div>
 
     <div class="para">
-      Congratulations! You have successfully signed up for Study Notion.
+      Congratulations! You have successfully signed in cloud computing cell.
     </div>
 
     <div>
