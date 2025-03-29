@@ -20,25 +20,8 @@ exports.signUp = async (req, res) => {
     const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
     const { file } = req.files;
 
-    if (!recaptchaValue) {
-      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
-    }
 
-    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-    const secretKey = process.env.SECRET_KEY;
-
-    const recaptchaResponse = await axios.post(verifyUrl, null, {
-      params: {
-        secret: secretKey,
-        response: recaptchaValue,
-      },
-    });
-
-    if (!recaptchaResponse.data.success) {
-      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
-    }
-
-    if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence || !file) {
+    if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
       return res.status(400).send({ success: false, message: "All details and payment screenshot are required" });
     }
 
@@ -60,10 +43,34 @@ exports.signUp = async (req, res) => {
       return res.status(400).send({ success: false, message: "Invalid email format" });
     }
 
+    if(!file){
+      return res.status(400).send({ success: false, message: "payment screenshot is required" });
+    }
+
+    if (!recaptchaValue) {
+      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
+    }
+
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
+    const secretKey = process.env.SECRET_KEY;
+
+    const recaptchaResponse = await axios.post(verifyUrl, null, {
+      params: {
+        secret: secretKey,
+        response: recaptchaValue,
+      },
+    });
+
+    if (!recaptchaResponse.data.success) {
+      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
+    }
+
     const existEmail = await User.findOne({ email });
     if (existEmail) {
       return res.status(400).send({ success: false, message: "Email already exists" });
     }
+
+
 
     let supportTypes = ["png", "jpg", "jpeg"];
     let reqFileType = file.name.split(".").pop().toLowerCase();
@@ -118,7 +125,7 @@ exports.signUp = async (req, res) => {
     console.error("Error during signUp:", error.message);
     return res.status(500).send({
       success: false,
-      message: "Error while creating user",
+      message: "Error to signup! try again",
       error: error.message,
     });
   }
