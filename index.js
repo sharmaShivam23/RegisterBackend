@@ -28,12 +28,12 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: process.env.NODE_ENV === 'production', httpOnly: true },
-}));
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: process.env.NODE_ENV === 'production', httpOnly: true },
+// }));
 
 
 app.use(fileUpload({
