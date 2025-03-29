@@ -1,11 +1,7 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  firstName : {
-    type : String,
-    required : true
-  },
-  lastName : {
+  name : {
     type : String,
     required : true
   },
@@ -17,21 +13,31 @@ const userSchema = new mongoose.Schema({
     type : Number,
     required : true
   },
-  dob : {
-    type : Date,
-  },
-  password : {
-    type : String,
+  studentNumber : {
+    type : Number,
     required : true
   },
-  selectedRole : {
+  branch : {
     type : String,
+    required : true,
+  },
+  section : {
+    type : String,
+    required : true,
+  },
+  gender : {
+    type : String,
+    required : true,
+  },
+  residence : {
+    type : String,
+    required : true,
+  },
+  imageURL : {
+    type : String,
+    required : true
   }
 })
 
 module.exports = mongoose.model("User" , userSchema)
 
-
-
-// unique: true,
-// match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"]

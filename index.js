@@ -1,6 +1,4 @@
 
-
-
 const express = require('express');
 const cors = require("cors");
 const csrf = require('csurf');
@@ -43,16 +41,16 @@ app.use(fileUpload({
 
 
 const routes = require("./routes/Routes");
-app.use("/api/lms", routes);
+app.use("/api/register", routes);
 
 const database = require('./config/database');
 database();
 
 
 const { cloudinaryConnect } = require('./config/cloudinary');
-cloudinaryConnect();
+cloudinaryConnect()
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`Project successfully running on ${PORT}`);
+  console.log(`Project successfully running on ${PORT}`)
 });
