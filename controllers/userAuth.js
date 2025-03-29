@@ -22,32 +22,31 @@ exports.signUp = async (req, res) => {
 
 
     if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
-      return res.status(400).send({ success: false, message: "All details and payment screenshot are required" });
+      return res.status(400).send({ success: false, message: "All details  are required" });
     }
 
-    if (name.length < 2) {
+    else if (name.length < 2) {
       return res.status(400).send({ success: false, message: "Name must be at least 3 characters long" });
     }
 
 
-    if (phoneNumber.toString().length !== 10 || !/^\d+$/.test(phoneNumber)) {
+    else if (phoneNumber.toString().length !== 10 || !/^\d+$/.test(phoneNumber)) {
       return res.status(400).send({ success: false, message: "Phone number should be exactly 10 digits" });
     }
 
-    if (!studentNumber.startsWith('24')) {
+    else if (!studentNumber.startsWith('24')) {
       return res.status(400).send({ success: false, message: "Invalid student number" });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    else if (!email.endsWith("@akgec.ac.in")) {
       return res.status(400).send({ success: false, message: "Invalid email format" });
     }
 
-    if(!file){
+    else  if(!file){
       return res.status(400).send({ success: false, message: "payment screenshot is required" });
     }
 
-    if (!recaptchaValue) {
+    else if (!recaptchaValue) {
       return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
     }
 
