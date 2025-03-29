@@ -1,16 +1,16 @@
 
-// const express = require('express');
-// const cors = require("cors");
-// const csrf = require('csurf');
-// const session = require('express-session');
-// const cookieParser = require('cookie-parser');
-// require('dotenv').config();
-// const fileUpload = require('express-fileupload');
+const express = require('express');
+const cors = require("cors");
+const csrf = require('csurf');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+require('dotenv').config();
+const fileUpload = require('express-fileupload');
 
-// const app = express();
+const app = express();
 
 
-// app.use(express.json());
+app.use(express.json());
 // app.use(cookieParser());
 // app.use(cors({
 //   origin: 'http://localhost:5173',
@@ -34,26 +34,26 @@
 //   res.json({ csrfToken: req.csrfToken() });
 // });
 
-// app.use(fileUpload({
-//   useTempFiles: true,
-//   tempFileDir: '/tmp/'
-// }));
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}));
 
 
-// const routes = require("./routes/Routes");
-// app.use("/api/register", routes);
+const routes = require("./routes/Routes");
+app.use("/api/register", routes);
 
-// const database = require('./config/database');
-// database();
+const database = require('./config/database');
+database();
 
 
-// const { cloudinaryConnect } = require('./config/cloudinary');
-// cloudinaryConnect()
+const { cloudinaryConnect } = require('./config/cloudinary');
+cloudinaryConnect()
 
-// const PORT = process.env.PORT || 4000;
-// app.listen(PORT, () => {
-//   console.log(`Project successfully running on ${PORT}`)
-// });
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Project successfully running on ${PORT}`)
+});
 
 // const express = require('express');
 // const cors = require("cors");
@@ -115,44 +115,3 @@
 //   console.log(`Project successfully running on ${PORT}`);
 // });
 
-
-const express = require('express');
-const cors = require("cors");
-const csrf = require('csurf');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
-require('dotenv').config();
-
-const app = express();
-const routes = require("./routes/Routes");
-
-// Middleware
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
-
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'default_secret_key',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false, httpOnly: true }
-}));
-
-// File Upload
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: '/tmp/'
-}));
-
-// Routes
-app.use("/api/register", routes);
-
-// Start Server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Project successfully running on ${PORT}`);
-});
