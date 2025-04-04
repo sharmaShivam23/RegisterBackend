@@ -250,7 +250,7 @@ exports.signUp = async (req, res) => {
     const signupTemplate = fs.readFileSync(templatePath, 'utf8');
     const subject = "Welcome to cloud computing cell!";
     const text = `Hi ${name}, Congratulations! Registration successful.`;
-    const html = signupTemplate;
+    const html = signupTemplatereplace("{{ name }}", name);
 
     const isEmailSent = await sendEmail(email, subject, text, html);
     if (!isEmailSent) {
