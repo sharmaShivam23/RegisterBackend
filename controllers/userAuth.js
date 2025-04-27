@@ -1,24 +1,16 @@
 
 
 
-const User = require('./model/userSchema');
-const sendEmail = require('./Tools/sendEmail');
+const User = require('../model/userSchema');
+const sendEmail = require('../Tools/sendEmail');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const cloudinary = require('cloudinary').v2;
 
-function isFileTypeSupported(reqFileType, supportTypes) {
-  return supportTypes.includes(reqFileType);
-}
-
-async function uploadFileToCloudinary(file, folder) {
-  const options = { folder };
-  return await cloudinary.uploader.upload(file.tempFilePath, options);
-}
 
 exports.signUp = async (req, res) => {
   try {
+    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
     const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
     const file = req.files?.file;
 
@@ -28,10 +20,6 @@ exports.signUp = async (req, res) => {
     }
 
     
-    if (!file) {
-      return res.status(400).send({ success: false, message: "Payment screenshot is required" });
-    }
-
     
     if (name.length < 3) {
       return res.status(400).send({ success: false, message: "Name must be at least 3 characters long" });
@@ -44,9 +32,9 @@ exports.signUp = async (req, res) => {
     
 
 
-    // if (!/^24\d{5}$/.test(studentNumber)) {
-    //   return res.status(400).send({ success: false, message: "Invalid student number" });
-    // }
+    if (!/^24\d{5}$/.test(studentNumber)) {
+      return res.status(400).send({ success: false, message: "Invalid student number" });
+    }
     
 
   
@@ -57,7 +45,6 @@ exports.signUp = async (req, res) => {
     //   return res.status(400).send({ success: false, message: "Invalid Email" });
     // }
     
-
       
     if (!recaptchaValue) {
       return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
@@ -81,21 +68,7 @@ exports.signUp = async (req, res) => {
       return res.status(400).send({ success: false, message: "Email already exists" });
     }
 
-    
-    let supportTypes = ["png", "jpg", "jpeg"];
-    let reqFileType = file.name.split(".").pop().toLowerCase();
-
-    if (!isFileTypeSupported(reqFileType, supportTypes)) {
-      return res.status(400).send({
-        success: false,
-        message: "File type not supported",
-      });
-    }
-
-    
-    const response = await uploadFileToCloudinary(file, "lmsfolder");
-
-    
+   
     const userCreate = await User.create({
       name,
       email,
@@ -105,7 +78,6 @@ exports.signUp = async (req, res) => {
       section,
       gender,
       residence,
-      imageURL: response.secure_url
     });
 
   
@@ -120,7 +92,8 @@ exports.signUp = async (req, res) => {
     const signupTemplate = fs.readFileSync(templatePath, 'utf8');
     const subject = "Welcome to cloud computing cell!";
     const text = `Hi ${name}, Congratulations! Registration successful.`;
-    const html = signupTemplatereplace("{{ name }}", name);
+    const html  = signupTemplate.replace(/{{\s*name\s*}}/g, name)
+
 
     const isEmailSent = await sendEmail(email, subject, text, html);
     if (!isEmailSent) {

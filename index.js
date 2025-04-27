@@ -52,8 +52,6 @@ app.use("/api/register", routes);
 const database = require('./config/database');
 database();
 
-const { cloudinaryConnect } = require('./config/cloudinary');
-cloudinaryConnect();
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
