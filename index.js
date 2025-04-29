@@ -104,17 +104,37 @@ app.use(fileUpload({
 }));
 
 
+// const limiter = rateLimit({
+//   windowMs: 15 * 60,
+//   max: 2,
+//   message: {
+//     status: 429,
+//     message: "Too many requests , please try again after an hour"
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
+// app.use(limiter);
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 3,
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 100, // Limit each IP to 100 requests per hour
   message: {
     status: 429,
-    message: "Too many requests from this IP, please try again after an hour."
+    message: "Too many registration attempts from this IP, try again after an hour."
   },
   standardHeaders: true,
   legacyHeaders: false,
+
+  // Add this part
+  keyGenerator: (req, res) => {
+    // Get IP from x-forwarded-for (Vercel/Cloud)
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (Array.isArray(ip)) {
+      return ip[0];
+    }
+    return ip;
+  }
 });
-app.use(limiter);
 
 
 const routes = require("./routes/Routes");
