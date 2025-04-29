@@ -116,7 +116,7 @@ app.use(fileUpload({
 // });
 // app.use(limiter);
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000, 
+  windowMs: 15 * 1000, 
   max: 3, 
   message: {
     status: 429,
