@@ -72,6 +72,7 @@ const rateLimit = require("express-rate-limit");
 
 const app = express();
 
+app.set('trust proxy', 1);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -104,31 +105,32 @@ app.use(fileUpload({
 }));
 
 
-// const limiter = rateLimit({
-//   windowMs: 15 * 60,
-//   max: 2,
-//   message: {
-//     status: 429,
-//     message: "Too many requests , please try again after an hour"
-//   },
-//   standardHeaders: true,
-//   legacyHeaders: false,
-// });
-// app.use(limiter);
+
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,  // ✅ 15 minutes
+  windowMs: 15 * 60 * 1000, 
   max: 3,
   message: {
     status: 429,
     message: "Too many registration attempts from this IP, try again after 15 minutes."
   },
   standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: (req, res) => {
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    return Array.isArray(ip) ? ip[0] : ip;
-  }
+  legacyHeaders: false
 });
+
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, 
+//   max: 3,
+//   message: {
+//     status: 429,
+//     message: "Too many registration attempts from this IP, try again after 15 minutes."
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   keyGenerator: (req, res) => {
+//     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+//     return Array.isArray(ip) ? ip[0] : ip;
+//   }
+// });
 
 // app.use();
 
