@@ -127,7 +127,6 @@ const limiter = rateLimit({
 
   // Add this part
   keyGenerator: (req, res) => {
-    // Get IP from x-forwarded-for (Vercel/Cloud)
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (Array.isArray(ip)) {
       return ip[0];
@@ -135,6 +134,7 @@ const limiter = rateLimit({
     return ip;
   }
 });
+app.use(limiter);
 
 
 const routes = require("./routes/Routes");
