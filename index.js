@@ -116,7 +116,7 @@ app.use(fileUpload({
 // });
 // app.use(limiter);
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour window
+  windowMs: 60 * 60 * 1000, 
   max: 3, 
   message: {
     status: 429,
@@ -124,8 +124,6 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-
-  // Add this part
   keyGenerator: (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (Array.isArray(ip)) {
@@ -134,11 +132,11 @@ const limiter = rateLimit({
     return ip;
   }
 });
-app.use(limiter);
+// app.use();
 
 
 const routes = require("./routes/Routes");
-app.use("/api/register", routes);
+app.use("/api/register",limiter, routes);
 
 
 const database = require('./config/database');

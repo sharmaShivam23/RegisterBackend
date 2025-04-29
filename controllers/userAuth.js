@@ -10,8 +10,8 @@ const path = require('path');
 
 exports.signUp = async (req, res) => {
   try {
-    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
+    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
     const file = req.files?.file;
 
   
@@ -46,22 +46,22 @@ exports.signUp = async (req, res) => {
     // }
     
       
-    if (!recaptchaValue) {
-      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
-    }
+    // if (!recaptchaValue) {
+    //   return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
+    // }
 
-    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-    const secretKey = process.env.SECRET_KEY;
-    const recaptchaResponse = await axios.post(verifyUrl, null, {
-      params: {
-        secret: secretKey,
-        response: recaptchaValue,
-      },
-    });
+    // const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
+    // const secretKey = process.env.SECRET_KEY;
+    // const recaptchaResponse = await axios.post(verifyUrl, null, {
+    //   params: {
+    //     secret: secretKey,
+    //     response: recaptchaValue,
+    //   },
+    // });
 
-    if (!recaptchaResponse.data.success) {
-      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
-    }
+    // if (!recaptchaResponse.data.success) {
+    //   return res.status(400).send({ success: false, message: "reCAPTCHA verification failed" });
+    // }
 
     const existEmail = await User.findOne({ email });
     if (existEmail) {
