@@ -116,27 +116,25 @@ app.use(fileUpload({
 // });
 // app.use(limiter);
 const limiter = rateLimit({
-  windowMs: 15 * 1000, 
-  max: 3, 
+  windowMs: 15 * 60 * 1000,  // ✅ 15 minutes
+  max: 3,
   message: {
     status: 429,
-    message: "Too many registration attempts from this IP, try again after an hour."
+    message: "Too many registration attempts from this IP, try again after 15 minutes."
   },
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (Array.isArray(ip)) {
-      return ip[0];
-    }
-    return ip;
+    return Array.isArray(ip) ? ip[0] : ip;
   }
 });
+
 // app.use();
 
 
 const routes = require("./routes/Routes");
-app.use("/api/register",limiter, routes);
+app.use("/api/register",limiter ,routes);
 
 
 const database = require('./config/database');
