@@ -11,7 +11,7 @@ const path = require('path');
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , transactionID } = req.body;
     const file = req.files?.file;
 
   
@@ -44,6 +44,10 @@ exports.signUp = async (req, res) => {
     // if (email !== expectedEmail) {
     //   return res.status(400).send({ success: false, message: "Invalid Email" });
     // }
+
+    if(!transactionID){
+      return res.status(400).send({ success: false, message: "transaction ID is required" });
+    }
     
       
     if (!recaptchaValue) {
@@ -78,6 +82,7 @@ exports.signUp = async (req, res) => {
       section,
       gender,
       residence,
+      transactionID
     });
 
   
@@ -103,7 +108,7 @@ exports.signUp = async (req, res) => {
     res.status(201).send({
       success: true,
       data: userCreate,
-      message: "Registration successful",
+      message: "Registration successful for NIMBUS 2.0",
     });
 
   } catch (error) {
