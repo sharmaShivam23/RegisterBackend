@@ -117,7 +117,7 @@ app.use(fileUpload({
 // app.use(limiter);
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
-  max: 100, // Limit each IP to 100 requests per hour
+  max: 3, // Limit each IP to 100 requests per hour
   message: {
     status: 429,
     message: "Too many registration attempts from this IP, try again after an hour."
