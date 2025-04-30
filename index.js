@@ -49,7 +49,7 @@ app.use(fileUpload({
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 10,
+  max: 4,
   message: {
     status: 429,
     message: "Too many registration attempts from this IP, try again after 15 minutes."
