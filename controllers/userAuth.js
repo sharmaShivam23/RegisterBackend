@@ -22,7 +22,7 @@ exports.signUp = async (req, res) => {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence , transactionID} = req.body;
   
     const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , transactionID } = req.body;
-    const file = req.files?.file;
+    // const file = req.files?.file;
 
   
     if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
