@@ -3,11 +3,24 @@ const sendEmail = require('../Tools/sendEmail');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
+
+  
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    success: false,
+    message: "Too many requests from this IP, please try again later.",
+  },
+});
+exports.limiter = limiter;
 
 
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence , transactionID} = req.body;
+  
     const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , transactionID } = req.body;
     const file = req.files?.file;
 
