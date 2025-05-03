@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
   transactionID : {
     type : String,
     required : true,
+  },
+  is_paid : {
+    type : String,
+    default : ""
   }
 })
 
