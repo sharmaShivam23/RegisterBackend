@@ -36,6 +36,7 @@ app.use(cors({
     "http://localhost:5500",
     "http://localhost:5173",
     "http://localhost:5174",
+    "https://www.cccakgec.live"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
