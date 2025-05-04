@@ -112,9 +112,9 @@ exports.signUp = async (req, res) => {
 
 
     const isEmailSent = await sendEmail(email, subject, text, html);
-    if (!isEmailSent) {
-      return res.status(500).send({ success: false, message: "Failed to send the email." });
-    }
+    // if (!isEmailSent) {
+    //   return res.status(500).send({ success: false, message: "Failed to send the email." });
+    // }
 
     res.status(201).send({
       success: true,

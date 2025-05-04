@@ -8,4 +8,4 @@ const { limiter } = require("../controllers/userAuth");
 router.post("/signUp" ,limiter,signUp);
 
 
-module.exports = router;
+module.exports = router
