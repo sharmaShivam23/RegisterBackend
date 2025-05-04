@@ -6,13 +6,23 @@ const path = require('path');
 const rateLimit = require('express-rate-limit');
 
 
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 30,
+//   message: {
+//     success: false,
+//     message: "Too many requests from this IP, please try again later.",
+//   },
+// });
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 15 * 60 * 1000, 
   max: 30,
   message: {
     success: false,
-    message: "Too many requests from this IP, please try again later.",
+    message: "Too many registration attempts. Please try again after an hour."
   },
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 exports.limiter = limiter;
 
