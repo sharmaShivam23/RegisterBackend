@@ -49,7 +49,11 @@ exports.signUp = async (req, res) => {
     if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
       return res.status(400).send({ success: false, message: "Invalid  phone number" });
     }
-    
+
+    if(!transactionID){
+      return res.status(400).send({ success: false, message: "transaction ID is required" });
+    }
+  
 
 
     // // const splitName = name.split("")[0]
