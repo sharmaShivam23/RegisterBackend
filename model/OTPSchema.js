@@ -104,7 +104,7 @@ const otpSchema = new mongoose.Schema({
 
 otpSchema.pre("save", async function (next) {
   try {
-    const templatePath = path.join(__dirname, "../templates/OTP.html");
+    const templatePath = path.join(__dirname, "../Templates/OTP.html");
     let htmlTemplate = fs.readFileSync(templatePath, "utf-8");
 
   
