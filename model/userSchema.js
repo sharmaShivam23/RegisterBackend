@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
     type : String,
     default : ""
     // required : true,
+    
   },
   is_paid : {
     type : String,

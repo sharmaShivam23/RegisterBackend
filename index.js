@@ -1,5 +1,4 @@
 
-
 const express = require('express');
 const cors = require("cors");
 const session = require('express-session');
@@ -21,6 +20,15 @@ app.use(cookieParser());
 
 
 app.use(helmet());
+// app.use(helmet.contentSecurityPolicy({
+//   directives: {
+//     defaultSrc: ["'self'"],
+//     scriptSrc: ["'self'", "https://trusted.cdn.com"],
+//     objectSrc: ["'none'"],
+//     upgradeInsecureRequests: [],
+//   },
+// }));
+
 
 
 app.use(xss());

@@ -4,6 +4,8 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
+const OTP = require('../model/OTPSchema');
+const otpGenerator = require('otp-generator');
 
 
 // const limiter = rateLimit({
@@ -27,11 +29,72 @@ const limiter = rateLimit({
 exports.limiter = limiter;
 
 
+
+
+exports.sendOTP = async(req,res) => {
+  try{
+  const {email} = req.body
+
+  if(!email){
+    return res.status(400).json({
+      success : false,
+      message : "email is required"
+    })
+  }
+
+  const existUser= await User.findOne({email})
+  if(existUser){
+   return res.status(401).json({
+      success : false,
+      message : "user already exits"
+    })
+  }
+
+  let otp = otpGenerator.generate(5 , {
+    upperCaseAlphabets : false,
+    lowerCaseAlphabets : false,
+    specialChars : false,
+  })
+ console.log(otp);
+
+ let result = await OTP.findOne({otp : otp})
+ //if the genearted otp is already present in db genearte other unique otp
+ while(result){
+  otp = otpGenerator.generate(5 , {
+    upperCaseAlphabets : false,
+    lowerCaseAlphabets : false,
+    specialChars : false,
+  })
+  result = await OTP.findOne({otp : otp})
+ }
+ 
+ const otpPayload = {email,otp}
+ const otpresult = await OTP.create(otpPayload)
+ console.log(otpresult);
+ 
+
+ res.status(200).json({
+  success : true,
+  message : "otp send successfully",
+  otp
+ })
+  }catch(err){
+   console.log(err);
+   res.status(500).json({
+    success : true,
+    message : err.message
+   })
+   
+  }
+}
+
+
+
 exports.signUp = async (req, res) => {
   try {
-    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence , transactionID} = req.body;
+    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence , transactionID , otp} = req.body;
   
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , transactionID } = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , transactionID , otp } = req.body;
     
 
   
@@ -44,6 +107,34 @@ exports.signUp = async (req, res) => {
     if (name.length < 3) {
       return res.status(400).send({ success: false, message: "Name must be at least 3 characters long" });
     }
+
+    if(!otp){
+      return res.status(403).json({
+         success : false,
+         message : "OTP verification failed!"
+       })
+     }
+   
+
+    //find recent used otp
+    const recentOTP = await OTP.findOne({ email }).sort({ createdAt: -1 }); // get latest OTP
+   console.log("re" , recentOTP);
+   
+    if(!recentOTP ){
+      return res.status(403).json({
+        success: false,
+        message: "OTP is required!",
+      });
+    }
+
+    if (String(recentOTP.otp).trim() !== String(otp).trim())       {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
+    
+    
 
   
     if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
