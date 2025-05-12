@@ -18,7 +18,7 @@ const otpGenerator = require('otp-generator');
 // });
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 62,
+  max: 32,
   message: {
     success: false,
     message: "Too many registration attempts. Please try again after an hour."
